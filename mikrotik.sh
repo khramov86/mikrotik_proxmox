@@ -35,15 +35,18 @@ else
     unzip chr-$version.img.zip
     echo "---------------------------------------------------------------------------"
 fi
-if [ -f /root/temp/chr-$version.img ]; then
+if [ ! -f /root/temp/chr-$version.img ]; then
     echo "There is no image, please try again"
+    exit 1
 fi
 # List already existing VM's and ask for vmID
 echo "== Printing list of VM's on this hypervisor!"
 qm list
+while [[ ! "$vmID" =~ [0-9]{1,} ]]; do
 echo ""
 read -p "Please Enter free vm ID to use:" vmID
 echo ""
+done
 # Create storage dir for VM if needed.
 if [ -d /var/lib/vz/images/$vmID ] 
 then
